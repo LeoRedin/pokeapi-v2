@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import bodyParser from 'body-parser'
 
 import router from './routes'
+import { authMiddleware } from './middlewares'
 
 mongoose
   .connect(
@@ -18,6 +19,9 @@ mongoose
 const app = express()
 
 app.use(bodyParser.json())
+
+app.use(authMiddleware)
+
 app.use('/api', router)
 
 app.listen(5555, () => {
