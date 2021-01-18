@@ -1,16 +1,21 @@
 import { Router } from 'express'
 
 import { Pokemons } from '../models'
+import { authMiddleware } from '../middlewares'
 
 const pokemonsRouter = Router()
 
+/* Rotas públicas */
 pokemonsRouter.get('/all', getAllPokemons)
+
+/* Rotas privadas */
+pokemonsRouter.use(authMiddleware)
 pokemonsRouter.post('/create', createPokemon)
 
 async function getAllPokemons(req, res) {
   const pokemons = await Pokemons.find({})
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     pokemons,
   })
@@ -22,7 +27,7 @@ async function createPokemon(req, res) {
 
   newPoke.save(err => {
     if (err) {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         message: 'Erro interno do servidor',
         error: err,

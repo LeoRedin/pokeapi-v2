@@ -1,19 +1,19 @@
 import { Users } from '../models'
 
+import jwt from 'jsonwebtoken'
+
 async function authMiddleware(req, res, next) {
-  const { username } = req.body
-  // console.log("🚀 ~ file: auth.js ~ line 5 ~ authMiddleware ~ username", username)
-
-  const user = await Users.findOne({ username })
-
-  if (!user) {
-    res.status(403).json({
+  try {
+    const token = req.headers?.authorization?.split(' ')[1]
+    const decodedToken = jwt.verify(token, 'privateKey')
+    return next()
+  } catch (err) {
+    return res.status(401).json({
       success: false,
-      message: 'Usuário não autenticado',
+      message: 'Erro interno do servidor',
+      error: err,
     })
   }
-
-  next()
 }
 
 export { authMiddleware }
