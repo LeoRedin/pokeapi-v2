@@ -8,7 +8,12 @@ const pokemonsSchema = new Schema({
     auto: true,
   },
   types: {
-    type: [],
+    type: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Types',
+      },
+    ],
     required: true,
   },
   name: {
