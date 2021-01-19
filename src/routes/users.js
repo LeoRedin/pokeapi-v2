@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import jwt from 'jsonwebtoken'
 
 import { Users } from '../models'
 
@@ -40,9 +41,12 @@ async function loginUser(req, res) {
           message: err,
         })
 
+      const token = jwt.sign('payload', 'privateKey')
+
       return res.json({
         success: true,
         user,
+        token,
       })
     })
   })

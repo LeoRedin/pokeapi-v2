@@ -1,10 +1,15 @@
 import { Router } from 'express'
 
 import { Pokemons, Types } from '../models'
+import { authMiddleware } from '../middlewares'
 
 const pokemonsRouter = Router()
 
+/* Rotas públicas */
 pokemonsRouter.get('/all', getAllPokemons)
+
+/* Rotas Privadas */
+pokemonsRouter.use(authMiddleware)
 pokemonsRouter.post('/create', createPokemon)
 
 async function getAllPokemons(req, res) {

@@ -21,8 +21,6 @@ const app = express()
 
 app.use(bodyParser.json())
 
-app.use(authMiddleware)
-
 app.use('/api', router)
 
 app.listen(5555, () => {
